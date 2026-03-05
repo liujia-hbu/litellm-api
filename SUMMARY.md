@@ -5,12 +5,8 @@
   props:
     models: true
     downloadLink: true
+    url: https://github.com/liujia-hbu/litellm-api/blob/main/spec/zh/nsclouds-api.openapi.yaml
   type: builtin:openapi
-  dependencies:
-    spec:
-      ref:
-        kind: openapi
-        spec: nsclouds-api
   ```
 
 ## Chat Completions
@@ -21,12 +17,8 @@
   props:
     models: true
     downloadLink: true
+    url: https://github.com/liujia-hbu/litellm-api/blob/main/docs/chat.completions/deepseek/openai/openapi.yaml
   type: builtin:openapi
-  dependencies:
-    spec:
-      ref:
-        kind: openapi
-        spec: docs/chat.completions/deepseek/openai/openapi.yaml
   ```
 * [Anthropic 协议](docs/chat.completions/deepseek/Anthropic/README.md)
 * [Gemini 协议](docs/chat.completions/deepseek/Gemini/README.md)
@@ -52,12 +44,8 @@
   props:
     models: true
     downloadLink: true
+    url: https://github.com/liujia-hbu/litellm-api/blob/main/docs/chat.completions/openai/openai/openapi.json
   type: builtin:openapi
-  dependencies:
-    spec:
-      ref:
-        kind: openapi
-        spec: docs/chat.completions/openai/openai/openapi.yaml
   ```
 * [Anthropic 协议](docs/chat.completions/openai/Anthropic/README.md)
 * [Gemini 协议](docs/chat.completions/openai/Gemini/README.md)
@@ -90,12 +78,8 @@
   props:
     models: true
     downloadLink: true
+    url: https://github.com/liujia-hbu/litellm-api/blob/main/docs/embeddings/openai/openai/openapi.yaml
   type: builtin:openapi
-  dependencies:
-    spec:
-      ref:
-        kind: openapi
-        spec: docs/embeddings/openai/openai/openapi.yaml
   ```
 * [Anthropic 协议](docs/embeddings/openai/Anthropic/README.md)
 * [Gemini 协议](docs/embeddings/openai/Gemini/README.md)
@@ -128,12 +112,8 @@
   props:
     models: true
     downloadLink: true
+    url: https://github.com/liujia-hbu/litellm-api/blob/main/docs/image.generations/openai/openai/openapi.yaml
   type: builtin:openapi
-  dependencies:
-    spec:
-      ref:
-        kind: openapi
-        spec: docs/image.generations/openai/openai/openapi.yaml
   ```
 * [Anthropic 协议](docs/image.generations/openai/Anthropic/README.md)
 * [Gemini 协议](docs/image.generations/openai/Gemini/README.md)
@@ -166,12 +146,8 @@
   props:
     models: true
     downloadLink: true
+    url: https://github.com/liujia-hbu/litellm-api/blob/main/docs/image.edits/openai/openai/openapi.yaml
   type: builtin:openapi
-  dependencies:
-    spec:
-      ref:
-        kind: openapi
-        spec: docs/image.edits/openai/openai/openapi.yaml
   ```
 * [Anthropic 协议](docs/image.edits/openai/Anthropic/README.md)
 * [Gemini 协议](docs/image.edits/openai/Gemini/README.md)
@@ -204,12 +180,8 @@
   props:
     models: true
     downloadLink: true
+    url: https://github.com/liujia-hbu/litellm-api/blob/main/docs/audio.transcriptions/openai/openai/openapi.yaml
   type: builtin:openapi
-  dependencies:
-    spec:
-      ref:
-        kind: openapi
-        spec: docs/audio.transcriptions/openai/openai/openapi.yaml
   ```
 * [Anthropic 协议](docs/audio.transcriptions/openai/Anthropic/README.md)
 * [Gemini 协议](docs/audio.transcriptions/openai/Gemini/README.md)

@@ -248,7 +248,6 @@ tags:
     x-page-title: Gemini 协议
     x-page-icon: check-circle
     description: 支持 Gemini 协议的音频转录 API
-
 paths:
   # ========== 对话生成 API ==========
   /v1/chat/completions:
@@ -468,7 +467,6 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         '429':
           $ref: '#/components/responses/ErrorResponse'
-  
   # ========== 向量嵌入 API ==========
   /v1/embeddings:
     post:
@@ -558,7 +556,6 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         '429':
           $ref: '#/components/responses/ErrorResponse'
-  
   # ========== 图片生成 API ==========
   /v1/images/generations:
     post:
@@ -634,7 +631,6 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         '429':
           $ref: '#/components/responses/ErrorResponse'
-  
   # 图片编辑 API
   /v1/images/edits:
     post:
@@ -684,8 +680,10 @@ paths:
                 description: 使用两个图像文件进行编辑，并可选使用蒙版。
                 value:
                   model: dall-e-2
-                  image[]: '@body-lotion.png'
-                  mask: (binary)
+                  images:
+                    - "(binary)"
+                    - "(binary)"
+                  mask: "(binary)"
                   prompt: Add hats to all people
                   'n': 1
                   size: 1024x1024
@@ -708,17 +706,16 @@ paths:
                     size: 1024x1024
                     data:
                       - url: https://example.com/images/edited.png
-                  usage:
-                    total_tokens: 150
-                    input_tokens: 100
-                    output_tokens: 50
+                    usage:
+                      total_tokens: 150
+                      input_tokens: 100
+                      output_tokens: 50
         '400':
           $ref: '#/components/responses/ErrorResponse'
         '401':
           $ref: '#/components/responses/ErrorResponse'
         '429':
           $ref: '#/components/responses/ErrorResponse'
-  
   # 音频转录 API
   /v1/audio/transcriptions:
     post:
@@ -1038,35 +1035,43 @@ components:
       properties:
         model:
           type: string
-          description: 要使用的模型 ID
-        image[]:
+          description: 用于图像生成的模型
+        images:
           type: array
           items:
             type: string
             format: binary
-          description: 要编辑的图像文件
+          minItems: 1
+          maxItems: 16
+          description: 要编辑的输入图像引用。最多可提供 16 张图像。每张图像应为有效的 PNG 文件，小于 20MB，且为正方形。或者，也可以通过文件 API ID（`file_id`）或 URL（`image_url`）引用图像。
         mask:
           type: string
           format: binary
-          description: 可选的蒙版文件
+          description: 可选的蒙版图像。必须是有效的 PNG 文件，小于 20MB，且尺寸与第一张图像相同。或者，也可以通过文件 API ID（`file_id`）或 URL（`image_url`）引用蒙版。
         prompt:
           type: string
-          description: 编辑图像的文本提示
+          description: 描述所需编辑的文本
         n:
           type: integer
+          minimum: 1
           default: 1
+          description: 要生成的图像数量，介于 1 和 10 之间
         size:
           type: string
-          default: 1024x1024
+          enum: ["256x256", "512x512", "1024x1024"]
+          default: "1024x1024"
+          description: 生成图像的尺寸
         response_format:
           type: string
-          enum:
-            - url
-            - b64_json
-          default: url
+          enum: ["url", "b64_json"]
+          default: "url"
+          description: 返回生成图像的格式
+        user:
+          type: string
+          description: 代表最终用户的唯一标识符
       required:
         - model
-        - image[]
+        - images
         - prompt
     
     ImageResponse:

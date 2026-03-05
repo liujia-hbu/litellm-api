@@ -5,7 +5,7 @@
   props:
     models: true
     downloadLink: true
-    url: https://github.com/liujia-hbu/litellm-api/blob/main/spec/zh/nsclouds-api.openapi.yaml
+    url: https://github.com/liujia-hbu/litellm-api/blob/main/litellm-api.openapi.yaml
   type: builtin:openapi
   ```
 

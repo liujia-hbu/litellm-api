@@ -1,30 +1,9 @@
 # Table of contents
 
 * [简介](README.md)
-
-* ```yaml
-  props:
-    models: false
-    downloadLink: false
-  type: builtin:openapi
-  dependencies:
-    spec:
-      ref:
-        kind: openapi
-        spec: litellm-api
-  ```
-
-* OPENAI 规范demo
-
-* ```yaml
-  props:
-    models: false
-    downloadLink: false
-  type: builtin:openapi
-  dependencies:
-    spec:
-      ref:
-        kind: openapi
-        spec: nsclouds-api
-```
+* [深度求索](docs/zh/deepseek.md)
+<!-- * [智谱](zai.md)  待添加 -->
+<!-- * [字节跳动](volengine.md)  待添加 -->
+<!-- * [阿里千问](dashscope.md)  待添加 -->
+<!-- * [OpenAI](openai.md)  待添加 -->
 

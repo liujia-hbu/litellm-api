@@ -4,7 +4,7 @@
 
 ## 当前状态
 
-- 个人 GitHub 仓库：`git@github.com:liujia-hbu/nsclouds-api-docs.git`
+- 个人 GitHub 仓库：`git@github.com:togear/another-nsclouds-api-docs.git`
 - 公司 GitHub 仓库：`git@github.com:ngaa-dev/nsclouds-api-docs.git`
 - 当前 GitBook：继续使用已共享出来的个人 GitBook space。
 - 公司 GitBook：暂未切换。
@@ -28,6 +28,7 @@
 | --- | --- | --- |
 | `liujia-hbu/nsclouds-api-docs` | 已共享的个人 GitBook space | 当前展示、预览、验证 |
 
+
 GitBook OpenAPI 应从个人 GitHub raw URL 拉取：
 
 ```text
@@ -39,6 +40,7 @@ https://raw.githubusercontent.com/liujia-hbu/nsclouds-api-docs/main/docs/bundled
 | GitHub 内容源 | GitBook space | 用途 |
 | --- | --- | --- |
 | `ngaa-dev/nsclouds-api-docs` | 公司 GitBook space | 对外正式展示 |
+
 
 ## 推荐 remote 配置
 
@@ -53,6 +55,7 @@ origin git@github.com:liujia-hbu/nsclouds-api-docs.git
 ```bash
 git remote add company git@github.com:ngaa-dev/nsclouds-api-docs.git
 git remote -v
+
 ```
 
 推荐含义：
@@ -105,7 +108,7 @@ python3 scripts/sync_gitbook_openapi.py --wait
 当前脚本默认 raw base 是个人 GitHub：
 
 ```text
-https://raw.githubusercontent.com/liujia-hbu/nsclouds-api-docs/main/docs/bundled
+https://raw.githubusercontent.com/togear/another-nsclouds-api-docs/main/docs/bundled
 ```
 
 dry-run 输出里的 URL 必须全部指向 `liujia-hbu/nsclouds-api-docs`。

@@ -42,6 +42,16 @@ tags:
     x-page-title: OpenAI
     x-page-icon: brain
     description: OpenAI's Responses API
+  - name: image_generations_openai
+    x-parent: image_generations
+    x-page-title: OpenAI
+    x-page-icon: image
+    description: OpenAI's image generations API
+  - name: image_edits_openai
+    x-parent: image_edits
+    x-page-title: OpenAI
+    x-page-icon: image
+    description: OpenAI's image edits API
 paths:
   /v1/chat/completions:
     post:
@@ -465,6 +475,409 @@ paths:
                     data: {"type":"response.output_text.delta","sequence_number":1,"item_id":"msg_123","output_index":0,"content_index":0,"delta":"Hello"}
                     data: {"type":"response.output_text.delta","sequence_number":2,"item_id":"msg_123","output_index":0,"content_index":0,"delta":" there!"}
                     data: {"type":"response.completed","sequence_number":3,"response":{"id":"resp_123","object":"response","created_at":1741487325,"status":"completed","model":"gpt-5.4","output":[{"id":"msg_123","type":"message","role":"assistant","status":"completed","content":[{"type":"output_text","text":"Hello there!"}]}]}}
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '429':
+          $ref: '#/components/responses/ErrorResponse'
+  /v1/images/generations:
+    post:
+      tags:
+        - image_generations_openai
+      summary: Create Image
+      description: Generate images based on text prompts. Compatible with OpenAI's Images API.
+      operationId: createImageGeneration_openai
+      security:
+        - APIKeyHeader: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: gpt-image-2 image generation request body.
+              properties:
+                model:
+                  type: string
+                  description: Model ID to invoke.
+                prompt:
+                  type: string
+                  maxLength: 32000
+                  description: Prompt used to generate the image.
+                'n':
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  default: 1
+                  description: Number of images to request. The actual returned count can be lower than requested.
+                size:
+                  type: string
+                  description: Requested output image size.
+                  enum:
+                    - auto
+                    - 1024x1024
+                    - 1024x1536
+                    - 1536x1024
+                    - 2048x2048
+                    - 2048x1152
+                    - 3840x2160
+                    - 2160x3840
+                    - 2048x1360
+                    - 1360x2048
+                    - 1152x2048
+                    - 2048x1536
+                    - 1536x2048
+                    - 2048x880
+                    - 880x2048
+                    - 688x2048
+                    - 2048x688
+                    - 2048x1024
+                    - 1024x2048
+                  default: 1024x1024
+                quality:
+                  type: string
+                  description: Requested image quality level.
+                  enum:
+                    - low
+                    - medium
+                    - high
+                  default: high
+                background:
+                  type: string
+                  description: Background handling mode.
+                  enum:
+                    - opaque
+                    - auto
+                moderation:
+                  type: string
+                  description: Moderation strictness for image generation.
+                  enum:
+                    - low
+                    - auto
+                output_format:
+                  type: string
+                  description: Output image format.
+                  enum:
+                    - png
+                    - jpeg
+                  default: png
+                output_compression:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: Compression level from 0 to 100. Applies only to jpeg; omit for png or set to 100.
+              required:
+                - model
+                - prompt
+            examples:
+              default:
+                summary: Basic PNG
+                description: Generate a low-quality 1024x1024 PNG image.
+                value:
+                  model: gpt-image-2
+                  prompt: A cute cat sitting on a windowsill
+                  'n': 1
+                  quality: low
+                  size: 1024x1024
+                  background: opaque
+                  moderation: auto
+                  output_format: png
+              jpeg-compression:
+                summary: JPEG Output
+                description: Generate a compressed JPEG image.
+                value:
+                  model: gpt-image-2
+                  prompt: A futuristic cityscape at sunset
+                  'n': 1
+                  quality: high
+                  size: 2048x1152
+                  background: auto
+                  moderation: low
+                  output_format: jpeg
+                  output_compression: 80
+              multiple-images:
+                summary: Multiple Images
+                description: Request multiple medium-quality PNG images.
+                value:
+                  model: gpt-image-2
+                  prompt: A beautiful landscape
+                  'n': 2
+                  quality: medium
+                  size: 1536x1024
+                  output_format: png
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                description: gpt-image-2 image generation response.
+                properties:
+                  created:
+                    type: integer
+                    description: Unix timestamp in seconds when the response was created.
+                  background:
+                    type: string
+                    description: Background type used for the generated image.
+                  output_format:
+                    type: string
+                    description: Output image format.
+                  quality:
+                    type: string
+                    description: Effective image quality used by the model.
+                  size:
+                    type: string
+                    description: Final returned image size.
+                  data:
+                    type: array
+                    description: Generated image results.
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: Generated image URL.
+                        revised_prompt:
+                          type: string
+                          description: Prompt actually used or revised by the model.
+                  usage:
+                    $ref: '#/components/schemas/ImageUsage'
+              examples:
+                default-response:
+                  summary: PNG Response
+                  description: Complete response containing a PNG image URL and optional metadata.
+                  value:
+                    created: 1680000000
+                    background: opaque
+                    output_format: png
+                    quality: low
+                    size: 1024x1024
+                    data:
+                      - url: 'https://example.com/images/cat.png'
+                        revised_prompt: 'A cute cat sitting on a windowsill, looking out at a garden'
+                    usage:
+                      total_tokens: 100
+                      input_tokens: 50
+                      output_tokens: 50
+                      input_tokens_details:
+                        text_tokens: 10
+                        image_tokens: 40
+                jpeg-response:
+                  summary: JPEG Response
+                  description: Complete response containing a JPEG image URL and optional metadata.
+                  value:
+                    created: 1680000001
+                    background: auto
+                    output_format: jpeg
+                    quality: high
+                    size: 2048x1152
+                    data:
+                      - url: 'https://example.com/images/cityscape.jpg'
+                        revised_prompt: A futuristic cityscape at sunset with warm reflective glass towers
+                    usage:
+                      total_tokens: 120
+                      input_tokens: 40
+                      output_tokens: 80
+                      input_tokens_details:
+                        text_tokens: 12
+                        image_tokens: 28
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '429':
+          $ref: '#/components/responses/ErrorResponse'
+  /v1/images/edits:
+    post:
+      tags:
+        - image_edits_openai
+      summary: Edit Image
+      description: Create edited images based on original images and text prompts. Compatible with OpenAI's Images API.
+      operationId: createImageEdit_openai
+      security:
+        - APIKeyHeader: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              description: gpt-image-2 image editing request body.
+              properties:
+                model:
+                  type: string
+                  description: Model ID to invoke.
+                image:
+                  description: 'Input image or images. Supports file uploads, URLs, base64 strings, and data URIs.'
+                  anyOf:
+                    - type: string
+                      format: binary
+                    - type: array
+                      items:
+                        type: string
+                        format: binary
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                prompt:
+                  type: string
+                  maxLength: 32000
+                  description: Prompt used to guide image editing.
+                mask:
+                  description: Optional mask. Transparent areas represent regions to edit.
+                  anyOf:
+                    - type: string
+                      format: binary
+                    - type: string
+                'n':
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  default: 1
+                  description: Number of images to request. The actual returned count can be lower than requested.
+                size:
+                  type: string
+                  description: Requested output image size.
+                  enum:
+                    - auto
+                    - 1024x1024
+                    - 1024x1536
+                    - 1536x1024
+                    - 2048x2048
+                    - 2048x1152
+                    - 3840x2160
+                    - 2160x3840
+                    - 2048x1360
+                    - 1360x2048
+                    - 1152x2048
+                    - 2048x1536
+                    - 1536x2048
+                    - 2048x880
+                    - 880x2048
+                    - 688x2048
+                    - 2048x688
+                    - 2048x1024
+                    - 1024x2048
+                  default: 1024x1024
+                quality:
+                  type: string
+                  description: Requested image quality level.
+                  enum:
+                    - low
+                    - medium
+                    - high
+                  default: high
+                background:
+                  type: string
+                  description: Background handling mode.
+                  enum:
+                    - opaque
+                    - auto
+                output_format:
+                  type: string
+                  description: Output image format.
+                  enum:
+                    - png
+                    - jpeg
+                  default: png
+              required:
+                - model
+                - image
+                - prompt
+            encoding:
+              image:
+                style: form
+                explode: true
+            examples:
+              with-mask:
+                summary: With Mask
+                description: 'Edit using image, mask, and prompt.'
+                value:
+                  model: gpt-image-2
+                  image:
+                    - '@person.png'
+                  mask: '@mask.png'
+                  prompt: Add a hat to the person
+                  'n': 1
+                  size: 1024x1024
+                  quality: medium
+                  background: auto
+                  output_format: png
+              multiple-references:
+                summary: Multiple References
+                description: Edit using multiple reference images.
+                value:
+                  model: gpt-image-2
+                  image:
+                    - '@body-lotion.png'
+                    - 'https://example.com/images/reference.png'
+                  prompt: Change the background to a beach
+                  'n': 1
+                  size: 2048x1152
+                  quality: high
+                  background: opaque
+                  output_format: jpeg
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                description: gpt-image-2 image edit response.
+                properties:
+                  created:
+                    type: integer
+                    description: Unix timestamp in seconds when the response was created.
+                  background:
+                    type: string
+                    description: Background type used for the edited image.
+                  output_format:
+                    type: string
+                    description: Output image format.
+                  quality:
+                    type: string
+                    description: Effective image quality used by the model.
+                  size:
+                    type: string
+                    description: Final returned image size.
+                  data:
+                    type: array
+                    description: Edited image results.
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: Edited image URL.
+                        revised_prompt:
+                          type: string
+                          description: Prompt actually used or revised by the model.
+                  usage:
+                    $ref: '#/components/schemas/ImageUsage'
+              examples:
+                default-response:
+                  summary: Edit Response
+                  description: Return edited image and related metadata.
+                  value:
+                    created: 1680000002
+                    background: opaque
+                    output_format: png
+                    quality: high
+                    size: 1024x1024
+                    data:
+                      - url: 'https://example.com/images/edited.png'
+                        revised_prompt: 'A person with a hat, standing in a sunny park'
+                    usage:
+                      total_tokens: 120
+                      input_tokens: 60
+                      output_tokens: 60
+                      input_tokens_details:
+                        text_tokens: 12
+                        image_tokens: 48
         '400':
           $ref: '#/components/responses/ErrorResponse'
         '401':

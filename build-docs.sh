@@ -39,9 +39,9 @@ generate_bundled() {
   
   # 根据环境替换占位符
   if [ "$env" == "cn" ]; then
-    sed_in_place 's/${SERVER_URL}/https:\/\/aillm.nsclouds.com/g' "$temp_dir/zh/openapi/_common.yaml"
+    sed_in_place 's/${SERVER_URL}/https:\/\/bdai.chuangcache.com/g' "$temp_dir/zh/openapi/_common.yaml"
     sed_in_place 's/${SERVER_DESCRIPTION}/国内服务器/g' "$temp_dir/zh/openapi/_common.yaml"
-    sed_in_place 's/${SERVER_URL}/https:\/\/aillm.nsclouds.com/g' "$temp_dir/en/openapi/_common.yaml"
+    sed_in_place 's/${SERVER_URL}/https:\/\/bdai.chuangcache.com/g' "$temp_dir/en/openapi/_common.yaml"
     sed_in_place 's/${SERVER_DESCRIPTION}/China Server/g' "$temp_dir/en/openapi/_common.yaml"
   else
     sed_in_place 's/${SERVER_URL}/https:\/\/aillm.nscloud.ai/g' "$temp_dir/zh/openapi/_common.yaml"
@@ -126,7 +126,7 @@ build_cn() {
   # 生成文档
   generate_docs "cn"
   
-  echo "Configured for China environment (aillm.nsclouds.com)"
+  echo "Configured for China environment (bdai.chuangcache.com)"
 }
 
 # 生成国际版本

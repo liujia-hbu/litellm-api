@@ -4,7 +4,7 @@ info:
   description: OpenAI 兼容接口和厂家兼容接口的 API 文档。
   version: 1.11.0
 servers:
-  - url: 'https://aillm.nsclouds.com'
+  - url: 'https://bdai.chuangcache.com'
     description: 国内服务器
 tags:
   - name: chat_completions

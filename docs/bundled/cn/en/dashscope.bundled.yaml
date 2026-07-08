@@ -4,7 +4,7 @@ info:
   description: API documentation for OpenAI-compatible and provider-compatible AI endpoints.
   version: 1.11.0
 servers:
-  - url: 'https://aillm.nsclouds.com'
+  - url: 'https://bdai.chuangcache.com'
     description: China Server
 tags:
   - name: chat_completions

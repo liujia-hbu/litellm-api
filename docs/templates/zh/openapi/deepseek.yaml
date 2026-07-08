@@ -83,7 +83,7 @@ paths:
       #     label: HTTP
       #     source: |
       #       POST /v1/chat/completions HTTP/1.1
-      #       Host: aillm.nsclouds.com
+      #       Host: bdai.chuangcache.com
       #       Content-Type: application/json
       #       Authorization: Bearer your-api-key
 
@@ -102,7 +102,7 @@ paths:
       #     label: HTTP Stream
       #     source: |
       #       POST /v1/chat/completions HTTP/1.1
-      #       Host: aillm.nsclouds.com
+      #       Host: bdai.chuangcache.com
       #       Content-Type: application/json
       #       Authorization: Bearer your-api-key
 
@@ -122,7 +122,7 @@ paths:
       #   - lang: bash
       #     label: curl
       #     source: |
-      #       curl -X POST "https://aillm.nsclouds.com/v1/chat/completions" \
+      #       curl -X POST "https://bdai.chuangcache.com/v1/chat/completions" \
       #         -H "Content-Type: application/json" \
       #         -H "Authorization: Bearer your-api-key" \
       #         -d '{
@@ -141,7 +141,7 @@ paths:
       #     source: |
       #       from openai import OpenAI
       #       client = OpenAI(
-      #           base_url="https://aillm.nsclouds.com",
+      #           base_url="https://bdai.chuangcache.com",
       #           api_key="your-api-key"
       #       )
       #       response = client.chat.completions.create(
@@ -159,7 +159,7 @@ paths:
       #       async function createChatCompletion() {
       #         try {
       #           const response = await axios.post(
-      #             'https://aillm.nsclouds.com/v1/chat/completions',
+      #             'https://bdai.chuangcache.com/v1/chat/completions',
       #             {
       #               model: 'deepseek-v3.1',
       #               messages: [

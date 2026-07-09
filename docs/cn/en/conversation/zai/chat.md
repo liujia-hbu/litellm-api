@@ -15,6 +15,7 @@ This endpoint provides an OpenAI-compatible Chat Completions path. Actual parame
 * `glm-4.7`
 * `glm-5`
 * `glm-5.1`
+* `glm-5.2`
 
 
 ### 2. API Details
